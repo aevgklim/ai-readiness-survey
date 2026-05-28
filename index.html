@@ -3,738 +3,467 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AI Readiness Assessment</title>
+  <title>Опрос по рабочим инструментам и процессам команды</title>
   <style>
     :root {
-      --bg: #f5f7fb;
-      --card: #ffffff;
-      --text: #172033;
-      --muted: #667085;
-      --border: #d9e0ea;
-      --primary: #ff7a1a;
-      --primary-dark: #e8680c;
-      --soft: #fff3e8;
-      --danger: #b42318;
-      --success: #067647;
+      --bg:#f5f7fb; --card:#fff; --text:#172033; --muted:#667085; --border:#d9e0ea;
+      --primary:#ff7a1a; --primary-dark:#e8680c; --soft:#fff3e8; --danger:#b42318; --success:#067647;
     }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      font-family: Inter, Arial, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.45;
-    }
-
-    .page {
-      max-width: 980px;
-      margin: 0 auto;
-      padding: 32px 16px 56px;
-    }
-
-    .hero {
-      background: linear-gradient(135deg, #172033 0%, #24324f 100%);
-      color: white;
-      border-radius: 24px;
-      padding: 32px;
-      margin-bottom: 24px;
-      box-shadow: 0 16px 40px rgba(23, 32, 51, 0.18);
-    }
-
-    .hero h1 {
-      margin: 0 0 12px;
-      font-size: 32px;
-      line-height: 1.15;
-    }
-
-    .hero p {
-      margin: 0;
-      color: #d7deea;
-      max-width: 760px;
-    }
-
-    .notice {
-      background: var(--soft);
-      border: 1px solid #ffd7b8;
-      color: #683600;
-      padding: 16px 18px;
-      border-radius: 16px;
-      margin-bottom: 24px;
-      font-size: 15px;
-    }
-
-    form {
-      display: grid;
-      gap: 18px;
-    }
-
-    section {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 22px;
-      padding: 24px;
-      box-shadow: 0 8px 24px rgba(23, 32, 51, 0.05);
-    }
-
-    section h2 {
-      margin: 0 0 6px;
-      font-size: 22px;
-    }
-
-    section .section-desc {
-      margin: 0 0 20px;
-      color: var(--muted);
-      font-size: 14px;
-    }
-
-    .field {
-      margin-bottom: 22px;
-    }
-
-    .field:last-child {
-      margin-bottom: 0;
-    }
-
-    label.question {
-      display: block;
-      font-weight: 700;
-      margin-bottom: 10px;
-    }
-
-    .hint {
-      color: var(--muted);
-      font-size: 13px;
-      margin-top: -6px;
-      margin-bottom: 10px;
-    }
-
-    input[type="text"],
-    input[type="email"],
-    textarea,
-    select {
-      width: 100%;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 12px 14px;
-      font-size: 15px;
-      background: white;
-      color: var(--text);
-      outline: none;
-    }
-
-    textarea {
-      min-height: 92px;
-      resize: vertical;
-    }
-
-    input:focus,
-    textarea:focus,
-    select:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(255, 122, 26, 0.14);
-    }
-
-    .options {
-      display: grid;
-      gap: 8px;
-    }
-
-    .option {
-      display: flex;
-      gap: 10px;
-      align-items: flex-start;
-      padding: 10px 12px;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      background: #fff;
-      cursor: pointer;
-    }
-
-    .option:hover {
-      border-color: #ffbd8c;
-      background: #fffaf6;
-    }
-
-    .option input {
-      margin-top: 3px;
-      flex-shrink: 0;
-    }
-
-    .scale {
-      display: grid;
-      grid-template-columns: repeat(10, 1fr);
-      gap: 8px;
-    }
-
-    .scale.five {
-      grid-template-columns: repeat(5, 1fr);
-    }
-
-    .scale label {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      min-height: 42px;
-      cursor: pointer;
-      background: white;
-    }
-
-    .scale input {
-      display: none;
-    }
-
-    .scale input:checked + span {
-      background: var(--primary);
-      color: white;
-      border-color: var(--primary);
-    }
-
-    .scale span {
-      width: 100%;
-      height: 100%;
-      min-height: 42px;
-      border-radius: 11px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-weight: 700;
-    }
-
-    .scale-meta {
-      display: flex;
-      justify-content: space-between;
-      color: var(--muted);
-      font-size: 12px;
-      margin-top: 6px;
-    }
-
-    .submit-area {
-      position: sticky;
-      bottom: 0;
-      background: rgba(245, 247, 251, 0.92);
-      backdrop-filter: blur(8px);
-      border-top: 1px solid var(--border);
-      padding: 18px 0 0;
-      margin-top: 4px;
-    }
-
-    button {
-      width: 100%;
-      border: none;
-      border-radius: 16px;
-      background: var(--primary);
-      color: white;
-      padding: 16px 20px;
-      font-size: 17px;
-      font-weight: 800;
-      cursor: pointer;
-      box-shadow: 0 10px 24px rgba(255, 122, 26, 0.28);
-    }
-
-    button:hover {
-      background: var(--primary-dark);
-    }
-
-    button:disabled {
-      opacity: 0.55;
-      cursor: not-allowed;
-    }
-
-    .status {
-      margin-top: 12px;
-      font-weight: 700;
-      text-align: center;
-    }
-
-    .status.success {
-      color: var(--success);
-    }
-
-    .status.error {
-      color: var(--danger);
-    }
-
-    .required {
-      color: var(--danger);
-    }
-
-    .footer-note {
-      color: var(--muted);
-      font-size: 12px;
-      margin-top: 14px;
-      text-align: center;
-    }
-
-    @media (max-width: 640px) {
-      .hero {
-        padding: 24px;
-      }
-
-      .hero h1 {
-        font-size: 25px;
-      }
-
-      section {
-        padding: 18px;
-      }
-
-      .scale {
-        grid-template-columns: repeat(5, 1fr);
-      }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:Inter,Arial,sans-serif; background:var(--bg); color:var(--text); line-height:1.45; }
+    .page { max-width:980px; margin:0 auto; padding:28px 16px 56px; }
+    .hero { background:linear-gradient(135deg,#1d2a44 0%,#24324f 100%); color:white; border-radius:24px; padding:30px; margin-bottom:18px; box-shadow:0 16px 40px rgba(23,32,51,.16); }
+    .hero h1 { margin:0 0 12px; font-size:30px; line-height:1.15; }
+    .hero p { margin:0; color:#d7deea; max-width:790px; font-size:16px; }
+    .notice { background:var(--soft); border:1px solid #ffd7b8; color:#683600; padding:14px 16px; border-radius:16px; margin-bottom:20px; font-size:15px; }
+    .already-submitted { display:none; background:#ecfdf3; border:1px solid #abefc6; color:#067647; padding:16px; border-radius:16px; margin-bottom:20px; font-weight:700; }
+    form { display:grid; gap:16px; }
+    section { background:var(--card); border:1px solid var(--border); border-radius:22px; padding:24px; box-shadow:0 8px 24px rgba(23,32,51,.05); }
+    section h2 { margin:0 0 6px; font-size:22px; }
+    .section-desc { margin:0 0 20px; color:var(--muted); font-size:14px; }
+    .field { margin-bottom:22px; }
+    .field:last-child { margin-bottom:0; }
+    .hidden { display:none!important; }
+    label.question { display:block; font-weight:700; margin-bottom:10px; }
+    input[type="text"], textarea, select { width:100%; border:1px solid var(--border); border-radius:12px; padding:12px 14px; font-size:16px; background:white; color:var(--text); outline:none; }
+    textarea { min-height:92px; resize:vertical; }
+    input:focus, textarea:focus, select:focus { border-color:var(--primary); box-shadow:0 0 0 3px rgba(255,122,26,.14); }
+    .options { display:grid; gap:8px; }
+    .option { display:flex; gap:10px; align-items:flex-start; padding:10px 12px; border:1px solid var(--border); border-radius:12px; background:white; cursor:pointer; min-height:44px; }
+    .option:hover { border-color:#ffbd8c; background:#fffaf6; }
+    .option input { margin-top:4px; flex-shrink:0; }
+    .scale { display:grid; grid-template-columns:repeat(10,minmax(42px,1fr)); gap:8px; overflow-x:auto; padding-bottom:2px; }
+    .scale.five { grid-template-columns:repeat(5,minmax(50px,1fr)); }
+    .scale label { display:flex; justify-content:center; align-items:center; border:1px solid var(--border); border-radius:12px; min-height:44px; cursor:pointer; background:white; min-width:42px; }
+    .scale input { display:none; }
+    .scale input:checked + span { background:var(--primary); color:white; }
+    .scale span { width:100%; min-height:44px; border-radius:11px; display:flex; justify-content:center; align-items:center; font-weight:700; }
+    .scale-meta { display:flex; justify-content:space-between; color:var(--muted); font-size:12px; margin-top:6px; gap:12px; }
+    .submit-area { position:sticky; bottom:0; background:rgba(245,247,251,.94); backdrop-filter:blur(8px); border-top:1px solid var(--border); padding:16px 0 0; z-index:10; }
+    button { width:100%; border:none; border-radius:16px; background:var(--primary); color:white; padding:16px 20px; font-size:17px; font-weight:800; cursor:pointer; box-shadow:0 10px 24px rgba(255,122,26,.28); }
+    button:hover { background:var(--primary-dark); }
+    button:disabled { opacity:.55; cursor:not-allowed; }
+    .status { margin-top:12px; font-weight:700; text-align:center; }
+    .success { color:var(--success); } .error { color:var(--danger); } .required { color:var(--danger); }
+    .footer-note { color:var(--muted); font-size:12px; margin-top:12px; text-align:center; }
+    @media (max-width:720px) {
+      .page { padding:14px 10px 42px; } .hero { padding:20px; border-radius:20px; } .hero h1 { font-size:23px; } .hero p,.notice { font-size:14px; }
+      section { padding:16px; border-radius:18px; } section h2 { font-size:19px; } .field { margin-bottom:18px; }
+      .scale { grid-template-columns:repeat(5,1fr); overflow-x:visible; } .scale label { min-width:0; }
+      button { padding:15px 16px; font-size:16px; }
     }
   </style>
 </head>
-
 <body>
-  <main class="page">
-    <div class="hero">
-      <h1>AI Readiness Assessment</h1>
-      <p>
-        Опрос по готовности команды к AI-first рабочим процессам. Под AI-инструментами понимаются ChatGPT, Claude, Claude Code, Cursor, GitHub Copilot, Gemini, DeepSeek, Qwen, Ollama, локальные модели, AI-агенты, плагины IDE и другие аналогичные решения.
-      </p>
-    </div>
+<main class="page">
+  <div class="hero">
+    <h1>Опрос по рабочим инструментам и процессам команды</h1>
+    <p>Опрос помогает понять, какие инструменты и подходы используются в ежедневной работе, какие задачи занимают больше времени и где есть потенциал для улучшения процессов.</p>
+  </div>
+  <div class="notice">Пожалуйста, отвечайте исходя из реальной рабочей практики. Вопросы относятся к текущим инструментам, процессам, способам выполнения задач и возможным ограничениям.</div>
+  <div id="alreadySubmitted" class="already-submitted">С этого устройства ответ уже был отправлен. Повторная отправка заблокирована.</div>
 
-    <div class="notice">
-      Цель опроса — оценить не теоретическое отношение к AI, а реальную практику, готовность адаптироваться, текущий уровень владения инструментами и возможные блокеры внедрения.
-    </div>
+  <form id="surveyForm">
+    <section>
+      <h2>1. Профиль сотрудника</h2>
+      <p class="section-desc">Базовая информация для сопоставления ответов и дальнейшего анализа.</p>
 
-    <form id="surveyForm">
-      <section>
-        <h2>1. Профиль сотрудника</h2>
-        <p class="section-desc">Базовая информация для сегментации результатов.</p>
-
-        <div class="field">
-          <label class="question" for="name">ФИО или идентификатор сотрудника <span class="required">*</span></label>
-          <input type="text" id="name" name="name" required />
-        </div>
-
-        <div class="field">
-          <label class="question" for="email">Email</label>
-          <input type="email" id="email" name="email" />
-        </div>
-
-        <div class="field">
-          <label class="question" for="role">Роль <span class="required">*</span></label>
-          <select id="role" name="role" required>
-            <option value="">Выберите роль</option>
-            <option>Backend</option>
-            <option>Frontend</option>
-            <option>Mobile</option>
-            <option>QA</option>
-            <option>Analyst</option>
-            <option>DevOps/SRE</option>
-            <option>TeamLead</option>
-            <option>PM/PO</option>
-            <option>Другое</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label class="question" for="experience">Опыт работы <span class="required">*</span></label>
-          <select id="experience" name="experience" required>
-            <option value="">Выберите опыт</option>
-            <option>Менее 1 года</option>
-            <option>1–3 года</option>
-            <option>3–5 лет</option>
-            <option>5–10 лет</option>
-            <option>Более 10 лет</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label class="question">Уровень технической экспертизы, самооценка <span class="required">*</span></label>
-          <div class="scale" data-name="technical_expertise"></div>
-          <div class="scale-meta"><span>1 — низкий</span><span>10 — высокий</span></div>
-        </div>
-      </section>
-
-      <section>
-        <h2>2. Фактическое использование AI</h2>
-        <p class="section-desc">Нас интересует не мнение об AI, а текущая практика.</p>
-
-        <div class="field">
-          <label class="question">Как часто вы используете AI-инструменты в рабочих задачах? <span class="required">*</span></label>
-          <div class="options">
-            <label class="option"><input type="radio" name="ai_frequency" value="Несколько раз в день" required /> Несколько раз в день</label>
-            <label class="option"><input type="radio" name="ai_frequency" value="Ежедневно" /> Ежедневно</label>
-            <label class="option"><input type="radio" name="ai_frequency" value="Несколько раз в неделю" /> Несколько раз в неделю</label>
-            <label class="option"><input type="radio" name="ai_frequency" value="Несколько раз в месяц" /> Несколько раз в месяц</label>
-            <label class="option"><input type="radio" name="ai_frequency" value="Редко" /> Редко</label>
-            <label class="option"><input type="radio" name="ai_frequency" value="Не использую" /> Не использую</label>
-          </div>
-        </div>
-
-        <div class="field">
-          <label class="question">Какие AI-инструменты вы реально используете в работе?</label>
-          <div class="options checkbox-group" data-name="ai_tools">
-            <label class="option"><input type="checkbox" value="ChatGPT" /> ChatGPT</label>
-            <label class="option"><input type="checkbox" value="Claude" /> Claude</label>
-            <label class="option"><input type="checkbox" value="Claude Code" /> Claude Code</label>
-            <label class="option"><input type="checkbox" value="Cursor" /> Cursor</label>
-            <label class="option"><input type="checkbox" value="GitHub Copilot" /> GitHub Copilot</label>
-            <label class="option"><input type="checkbox" value="Gemini" /> Gemini</label>
-            <label class="option"><input type="checkbox" value="DeepSeek" /> DeepSeek</label>
-            <label class="option"><input type="checkbox" value="Qwen" /> Qwen</label>
-            <label class="option"><input type="checkbox" value="Ollama / локальные модели" /> Ollama / локальные модели</label>
-            <label class="option"><input type="checkbox" value="AI IDE plugins" /> AI IDE plugins</label>
-            <label class="option"><input type="checkbox" value="AI Agents / workflows" /> AI Agents / workflows</label>
-            <label class="option"><input type="checkbox" value="AI генерация тестов" /> AI генерация тестов</label>
-            <label class="option"><input type="checkbox" value="AI генерация документации" /> AI генерация документации</label>
-            <label class="option"><input type="checkbox" value="AI для SQL / аналитики" /> AI для SQL / аналитики</label>
-            <label class="option"><input type="checkbox" value="AI для DevOps" /> AI для DevOps</label>
-            <label class="option"><input type="checkbox" value="Не использую AI" /> Не использую AI</label>
-          </div>
-          <input type="text" name="ai_tools_other" placeholder="Другое, укажите" style="margin-top: 10px;" />
-        </div>
-
-        <div class="field">
-          <label class="question">Для каких задач вы используете AI?</label>
-          <div class="options checkbox-group" data-name="ai_tasks">
-            <label class="option"><input type="checkbox" value="Написание кода" /> Написание кода</label>
-            <label class="option"><input type="checkbox" value="Рефакторинг" /> Рефакторинг</label>
-            <label class="option"><input type="checkbox" value="Дебаг" /> Дебаг</label>
-            <label class="option"><input type="checkbox" value="Code review" /> Code review</label>
-            <label class="option"><input type="checkbox" value="Генерация тестов" /> Генерация тестов</label>
-            <label class="option"><input type="checkbox" value="Написание автотестов" /> Написание автотестов</label>
-            <label class="option"><input type="checkbox" value="SQL / аналитика" /> SQL / аналитика</label>
-            <label class="option"><input type="checkbox" value="Документация" /> Документация</label>
-            <label class="option"><input type="checkbox" value="Генерация API контрактов" /> Генерация API контрактов</label>
-            <label class="option"><input type="checkbox" value="Написание ТЗ" /> Написание ТЗ</label>
-            <label class="option"><input type="checkbox" value="Анализ логов" /> Анализ логов</label>
-            <label class="option"><input type="checkbox" value="Инфраструктура / DevOps" /> Инфраструктура / DevOps</label>
-            <label class="option"><input type="checkbox" value="Исследование технологий" /> Исследование технологий</label>
-            <label class="option"><input type="checkbox" value="Обучение" /> Обучение</label>
-            <label class="option"><input type="checkbox" value="Автоматизация рутины" /> Автоматизация рутины</label>
-            <label class="option"><input type="checkbox" value="Не использую" /> Не использую</label>
-          </div>
-        </div>
-
-        <div class="field">
-          <label class="question">Сколько времени AI экономит вам в среднем в неделю? <span class="required">*</span></label>
-          <div class="options">
-            <label class="option"><input type="radio" name="time_saved" value="Не экономит" required /> Не экономит</label>
-            <label class="option"><input type="radio" name="time_saved" value="<1 часа" /> Менее 1 часа</label>
-            <label class="option"><input type="radio" name="time_saved" value="1–3 часа" /> 1–3 часа</label>
-            <label class="option"><input type="radio" name="time_saved" value="3–5 часов" /> 3–5 часов</label>
-            <label class="option"><input type="radio" name="time_saved" value="5–10 часов" /> 5–10 часов</label>
-            <label class="option"><input type="radio" name="time_saved" value=">10 часов" /> Более 10 часов</label>
-          </div>
-        </div>
-
-        <div class="field">
-          <label class="question" for="regular_workflow">Есть ли задачи, где AI уже стал регулярной частью workflow?</label>
-          <textarea id="regular_workflow" name="regular_workflow"></textarea>
-        </div>
-      </section>
-
-      <section>
-        <h2>3. Глубина владения AI</h2>
-        <p class="section-desc">Блок помогает отделить базовое использование от зрелого применения AI.</p>
-
-        <div class="field">
-          <label class="question">Какие практики вы используете?</label>
-          <div class="options checkbox-group" data-name="ai_practices">
-            <label class="option"><input type="checkbox" value="AI внутри IDE" /> AI внутри IDE</label>
-            <label class="option"><input type="checkbox" value="Prompt chaining" /> Prompt chaining</label>
-            <label class="option"><input type="checkbox" value="Context prompting" /> Context prompting</label>
-            <label class="option"><input type="checkbox" value="AI code review" /> AI code review</label>
-            <label class="option"><input type="checkbox" value="AI-assisted debugging" /> AI-assisted debugging</label>
-            <label class="option"><input type="checkbox" value="AI-generated tests" /> AI-generated tests</label>
-            <label class="option"><input type="checkbox" value="Multi-model workflow" /> Multi-model workflow</label>
-            <label class="option"><input type="checkbox" value="AI agents" /> AI agents</label>
-            <label class="option"><input type="checkbox" value="Локальные модели" /> Локальные модели</label>
-            <label class="option"><input type="checkbox" value="RAG / contextual search" /> RAG / contextual search</label>
-            <label class="option"><input type="checkbox" value="AI automation scripts" /> AI automation scripts</label>
-            <label class="option"><input type="checkbox" value="AI для архитектурных решений" /> AI для архитектурных решений</label>
-            <label class="option"><input type="checkbox" value="AI для анализа логов" /> AI для анализа логов</label>
-            <label class="option"><input type="checkbox" value="AI для генерации документации" /> AI для генерации документации</label>
-            <label class="option"><input type="checkbox" value="Ничего из перечисленного" /> Ничего из перечисленного</label>
-          </div>
-        </div>
-
-        <div class="field"><label class="question">Писать эффективные промпты <span class="required">*</span></label><div class="scale five" data-name="skill_prompts" data-max="5"></div></div>
-        <div class="field"><label class="question">Проверять корректность AI-ответов <span class="required">*</span></label><div class="scale five" data-name="skill_verify" data-max="5"></div></div>
-        <div class="field"><label class="question">Использовать AI внутри IDE <span class="required">*</span></label><div class="scale five" data-name="skill_ide" data-max="5"></div></div>
-        <div class="field"><label class="question">Использовать AI для ускорения рутинных задач <span class="required">*</span></label><div class="scale five" data-name="skill_routine" data-max="5"></div></div>
-        <div class="field"><label class="question">Использовать AI для сложных инженерных задач <span class="required">*</span></label><div class="scale five" data-name="skill_complex" data-max="5"></div></div>
-        <div class="field"><label class="question">Использовать AI без ухудшения качества результата <span class="required">*</span></label><div class="scale five" data-name="skill_quality" data-max="5"></div></div>
-
-        <div class="field">
-          <label class="question">Использовали ли вы AI-agent / semi-autonomous workflow? <span class="required">*</span></label>
-          <div class="options">
-            <label class="option"><input type="radio" name="agent_usage" value="Активно использую" required /> Активно использую</label>
-            <label class="option"><input type="radio" name="agent_usage" value="Периодически использую" /> Периодически использую</label>
-            <label class="option"><input type="radio" name="agent_usage" value="Пробовал(а)" /> Пробовал(а)</label>
-            <label class="option"><input type="radio" name="agent_usage" value="Знаю, но не использую" /> Знаю, но не использую</label>
-            <label class="option"><input type="radio" name="agent_usage" value="Не знаком(а)" /> Не знаком(а)</label>
-          </div>
-        </div>
-      </section>
-
-      <section>
-        <h2>4. AI-инициативность</h2>
-        <p class="section-desc">Один из ключевых блоков для выявления драйверов изменений.</p>
-
-        <div class="field">
-          <label class="question">За последние 3 месяца вы:</label>
-          <div class="options checkbox-group" data-name="ai_initiatives">
-            <label class="option"><input type="checkbox" value="Самостоятельно внедрили новый AI-инструмент" /> Самостоятельно внедрили новый AI-инструмент</label>
-            <label class="option"><input type="checkbox" value="Предлагали AI-улучшения процессов" /> Предлагали AI-улучшения процессов</label>
-            <label class="option"><input type="checkbox" value="Делились AI-практиками с коллегами" /> Делились AI-практиками с коллегами</label>
-            <label class="option"><input type="checkbox" value="Автоматизировали рутину через AI" /> Автоматизировали рутину через AI</label>
-            <label class="option"><input type="checkbox" value="Создавали собственные workflow / агенты" /> Создавали собственные workflow / агенты</label>
-            <label class="option"><input type="checkbox" value="Обучали коллег AI-инструментам" /> Обучали коллег AI-инструментам</label>
-            <label class="option"><input type="checkbox" value="Проводили эксперименты с AI" /> Проводили эксперименты с AI</label>
-            <label class="option"><input type="checkbox" value="Не предпринимали ничего из перечисленного" /> Не предпринимали ничего из перечисленного</label>
-          </div>
-        </div>
-
-        <div class="field">
-          <label class="question">Насколько вам интересно углублять навыки работы с AI? <span class="required">*</span></label>
-          <div class="scale" data-name="interest_ai"></div>
-        </div>
-
-        <div class="field">
-          <label class="question">Готовы ли вы инвестировать собственное время в изучение AI? <span class="required">*</span></label>
-          <div class="options">
-            <label class="option"><input type="radio" name="learning_readiness" value="Активно готов" required /> Активно готов</label>
-            <label class="option"><input type="radio" name="learning_readiness" value="Скорее готов" /> Скорее готов</label>
-            <label class="option"><input type="radio" name="learning_readiness" value="Только если потребуется по работе" /> Только если потребуется по работе</label>
-            <label class="option"><input type="radio" name="learning_readiness" value="Скорее не готов" /> Скорее не готов</label>
-            <label class="option"><input type="radio" name="learning_readiness" value="Не готов" /> Не готов</label>
-          </div>
-        </div>
-      </section>
-
-      <section>
-        <h2>5. AI-mindset и адаптивность</h2>
-        <p class="section-desc">Кейсовые вопросы для оценки готовности к изменениям.</p>
-
-        <div class="field">
-          <label class="question">Как вы считаете, AI через 2–3 года: <span class="required">*</span></label>
-          <div class="options">
-            <label class="option"><input type="radio" name="ai_future" value="Станет обязательной частью работы" required /> Станет обязательной частью работы</label>
-            <label class="option"><input type="radio" name="ai_future" value="Даст сильное преимущество отдельным специалистам" /> Даст сильное преимущество отдельным специалистам</label>
-            <label class="option"><input type="radio" name="ai_future" value="Частично изменит процессы" /> Частично изменит процессы</label>
-            <label class="option"><input type="radio" name="ai_future" value="Переоценен" /> Переоценен</label>
-            <label class="option"><input type="radio" name="ai_future" value="Существенно сократит часть ролей" /> Существенно сократит часть ролей</label>
-            <label class="option"><input type="radio" name="ai_future" value="Затрудняюсь ответить" /> Затрудняюсь ответить</label>
-          </div>
-        </div>
-
-        <div class="field">
-          <label class="question">Согласны ли вы: “Специалист без навыков работы с AI со временем станет менее конкурентоспособным”? <span class="required">*</span></label>
-          <div class="options">
-            <label class="option"><input type="radio" name="competitiveness_statement" value="Полностью согласен" required /> Полностью согласен</label>
-            <label class="option"><input type="radio" name="competitiveness_statement" value="Скорее согласен" /> Скорее согласен</label>
-            <label class="option"><input type="radio" name="competitiveness_statement" value="Нейтрально" /> Нейтрально</label>
-            <label class="option"><input type="radio" name="competitiveness_statement" value="Скорее не согласен" /> Скорее не согласен</label>
-            <label class="option"><input type="radio" name="competitiveness_statement" value="Полностью не согласен" /> Полностью не согласен</label>
-          </div>
-        </div>
-
-        <div class="field">
-          <label class="question">Если завтра большая часть команды перейдет на AI-first workflow, вы: <span class="required">*</span></label>
-          <div class="options">
-            <label class="option"><input type="radio" name="ai_first_reaction" value="Буду драйвером изменений" required /> Буду драйвером изменений</label>
-            <label class="option"><input type="radio" name="ai_first_reaction" value="Быстро адаптируюсь" /> Быстро адаптируюсь</label>
-            <label class="option"><input type="radio" name="ai_first_reaction" value="Адаптируюсь постепенно" /> Адаптируюсь постепенно</label>
-            <label class="option"><input type="radio" name="ai_first_reaction" value="Буду относиться скептически" /> Буду относиться скептически</label>
-            <label class="option"><input type="radio" name="ai_first_reaction" value="Скорее буду сопротивляться" /> Скорее буду сопротивляться</label>
-          </div>
-        </div>
-
-        <div class="field">
-          <label class="question">Если через 6 месяцев эффективность использования AI станет частью performance review, ваша реакция: <span class="required">*</span></label>
-          <div class="options">
-            <label class="option"><input type="radio" name="performance_review_reaction" value="Это логично и неизбежно" required /> Это логично и неизбежно</label>
-            <label class="option"><input type="radio" name="performance_review_reaction" value="Скорее поддерживаю" /> Скорее поддерживаю</label>
-            <label class="option"><input type="radio" name="performance_review_reaction" value="Нейтрально" /> Нейтрально</label>
-            <label class="option"><input type="radio" name="performance_review_reaction" value="Скорее негативно" /> Скорее негативно</label>
-            <label class="option"><input type="radio" name="performance_review_reaction" value="Резко негативно" /> Резко негативно</label>
-          </div>
-        </div>
-
-        <div class="field">
-          <label class="question">Если коллега с AI выполняет аналогичные задачи в 2 раза быстрее вас, вы: <span class="required">*</span></label>
-          <div class="options">
-            <label class="option"><input type="radio" name="faster_colleague_reaction" value="Начну активно перенимать практики" required /> Начну активно перенимать практики</label>
-            <label class="option"><input type="radio" name="faster_colleague_reaction" value="Попрошу обучение / помощь" /> Попрошу обучение / помощь</label>
-            <label class="option"><input type="radio" name="faster_colleague_reaction" value="Постараюсь адаптироваться самостоятельно" /> Постараюсь адаптироваться самостоятельно</label>
-            <label class="option"><input type="radio" name="faster_colleague_reaction" value="Считаю, что скорость не главное" /> Считаю, что скорость не главное</label>
-            <label class="option"><input type="radio" name="faster_colleague_reaction" value="Считаю такой подход вредным" /> Считаю такой подход вредным</label>
-          </div>
-        </div>
-
-        <div class="field">
-          <label class="question">Насколько вам комфортно быстро перестраивать свои рабочие подходы под новые технологии? <span class="required">*</span></label>
-          <div class="scale" data-name="change_comfort"></div>
-        </div>
-      </section>
-
-      <section>
-        <h2>6. Блокеры и сопротивление</h2>
-        <p class="section-desc">Здесь важно честно указать ограничения. Наличие рисков само по себе не является негативным фактором.</p>
-
-        <div class="field">
-          <label class="question">Что мешает вам использовать AI активнее?</label>
-          <div class="options checkbox-group" data-name="ai_blockers">
-            <label class="option"><input type="checkbox" value="Не хватает знаний" /> Не хватает знаний</label>
-            <label class="option"><input type="checkbox" value="Не хватает времени" /> Не хватает времени</label>
-            <label class="option"><input type="checkbox" value="Нет удобных инструментов" /> Нет удобных инструментов</label>
-            <label class="option"><input type="checkbox" value="Ограничения компании" /> Ограничения компании</label>
-            <label class="option"><input type="checkbox" value="Вопросы безопасности" /> Вопросы безопасности</label>
-            <label class="option"><input type="checkbox" value="Низкое качество ответов" /> Низкое качество ответов</label>
-            <label class="option"><input type="checkbox" value="Сложно встроить в workflow" /> Сложно встроить в workflow</label>
-            <label class="option"><input type="checkbox" value="Привычнее работать без AI" /> Привычнее работать без AI</label>
-            <label class="option"><input type="checkbox" value="Не вижу существенной пользы" /> Не вижу существенной пользы</label>
-            <label class="option"><input type="checkbox" value="Опасаюсь деградации навыков" /> Опасаюсь деградации навыков</label>
-            <label class="option"><input type="checkbox" value="Опасаюсь зависимости от AI" /> Опасаюсь зависимости от AI</label>
-            <label class="option"><input type="checkbox" value="Не хочу менять подход к работе" /> Не хочу менять подход к работе</label>
-          </div>
-          <input type="text" name="ai_blockers_other" placeholder="Другое, укажите" style="margin-top: 10px;" />
-        </div>
-
-        <div class="field">
-          <label class="question" for="useful_ai_processes">Какие AI-процессы в команде вы считаете наиболее полезными?</label>
-          <textarea id="useful_ai_processes" name="useful_ai_processes"></textarea>
-        </div>
-
-        <div class="field">
-          <label class="question" for="underestimated_risks">Какие риски AI-внедрения вы считаете наиболее недооцененными?</label>
-          <textarea id="underestimated_risks" name="underestimated_risks"></textarea>
-        </div>
-
-        <div class="field">
-          <label class="question" for="company_actions">Что компания должна сделать, чтобы AI реально приносил пользу?</label>
-          <textarea id="company_actions" name="company_actions"></textarea>
-        </div>
-      </section>
-
-      <section>
-        <h2>7. Самооценка эффективности</h2>
-        <p class="section-desc">Финальный блок для оценки личного влияния AI на эффективность.</p>
-
-        <div class="field">
-          <label class="question">Насколько AI сегодня влияет на вашу личную эффективность? <span class="required">*</span></label>
-          <div class="scale" data-name="personal_ai_impact"></div>
-        </div>
-
-        <div class="field">
-          <label class="question">Как вы оцениваете свой текущий уровень конкурентоспособности в AI-first среде? <span class="required">*</span></label>
-          <div class="scale" data-name="ai_first_competitiveness"></div>
-        </div>
-
-        <div class="field">
-          <label class="question" for="future_specialist">Какой специалист будет наиболее ценен через 3–5 лет?</label>
-          <textarea id="future_specialist" name="future_specialist"></textarea>
-        </div>
-      </section>
-
-      <div class="submit-area">
-        <button id="submitButton" type="submit">Отправить ответы</button>
-        <div id="status" class="status"></div>
-        <div class="footer-note">После отправки ответы будут записаны в Google Sheets.</div>
+      <div class="field">
+        <label class="question" for="name">ФИО сотрудника <span class="required">*</span></label>
+        <input type="text" id="name" name="name" required autocomplete="name" />
       </div>
-    </form>
-  </main>
 
-  <script>
-    // Вставьте сюда URL опубликованного Google Apps Script Web App.
-    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwKA9a6Y9Xhla81AK__P8y5jGZ8D8kVq8fppf4aEw-izfE_1XpnfnlzGOdcPwSrdaQ5iQ/exec";
+      <div class="field">
+        <label class="question" for="role">Роль <span class="required">*</span></label>
+        <select id="role" name="role" required>
+          <option value="">Выберите роль</option>
+          <option>Backend</option><option>Frontend</option><option>Mobile</option><option>QA</option><option>Analyst</option>
+          <option>DevOps/SRE</option><option>TeamLead</option><option>PM/PO</option><option>Другое</option>
+        </select>
+      </div>
 
-    function createScale(container) {
-      const name = container.dataset.name;
-      const max = Number(container.dataset.max || 10);
+      <div class="field hidden" id="roleOtherField">
+        <label class="question" for="role_other">Укажите роль <span class="required">*</span></label>
+        <input type="text" id="role_other" name="role_other" />
+      </div>
 
-      for (let i = 1; i <= max; i++) {
-        const label = document.createElement("label");
-        const input = document.createElement("input");
-        const span = document.createElement("span");
+      <div class="field">
+        <label class="question" for="experience_total">Общий опыт работы в профессии <span class="required">*</span></label>
+        <select id="experience_total" name="experience_total" required>
+          <option value="">Выберите опыт</option>
+          <option>Менее 1 года</option><option>1–3 года</option><option>3–5 лет</option><option>5–10 лет</option><option>Более 10 лет</option>
+        </select>
+      </div>
 
-        input.type = "radio";
-        input.name = name;
-        input.value = String(i);
-        input.required = true;
-        span.textContent = i;
+      <div class="field">
+        <label class="question" for="experience_naimix">Опыт работы на проекте Наймикс <span class="required">*</span></label>
+        <select id="experience_naimix" name="experience_naimix" required>
+          <option value="">Выберите опыт</option>
+          <option>Менее 3 месяцев</option><option>3–6 месяцев</option><option>6–12 месяцев</option><option>1–2 года</option><option>2–3 года</option><option>Более 3 лет</option>
+        </select>
+      </div>
 
-        label.appendChild(input);
-        label.appendChild(span);
-        container.appendChild(label);
-      }
+      <div class="field">
+        <label class="question">Уровень технической экспертизы, самооценка <span class="required">*</span></label>
+        <div class="scale" data-name="technical_expertise"></div>
+        <div class="scale-meta"><span>1 — низкий</span><span>10 — высокий</span></div>
+      </div>
+    </section>
+
+    <section>
+      <h2>2. Использование инструментов в рабочих задачах</h2>
+      <p class="section-desc">Отметьте фактическое использование любых AI-инструментов, если они применяются в вашей работе.</p>
+
+      <div class="field">
+        <label class="question">Как часто вы используете AI-инструменты в рабочих задачах? <span class="required">*</span></label>
+        <div class="options">
+          <label class="option"><input type="radio" name="ai_frequency" value="Несколько раз в день" required /> Несколько раз в день</label>
+          <label class="option"><input type="radio" name="ai_frequency" value="Ежедневно" /> Ежедневно</label>
+          <label class="option"><input type="radio" name="ai_frequency" value="Несколько раз в неделю" /> Несколько раз в неделю</label>
+          <label class="option"><input type="radio" name="ai_frequency" value="Несколько раз в месяц" /> Несколько раз в месяц</label>
+          <label class="option"><input type="radio" name="ai_frequency" value="Редко" /> Редко</label>
+          <label class="option"><input type="radio" name="ai_frequency" value="Не использую" /> Не использую</label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="question">Какие AI-инструменты вы реально используете в работе?</label>
+        <div class="options checkbox-group" data-name="ai_tools">
+          <label class="option"><input type="checkbox" value="ChatGPT" /> ChatGPT</label>
+          <label class="option"><input type="checkbox" value="Claude" /> Claude</label>
+          <label class="option"><input type="checkbox" value="Claude Code" /> Claude Code</label>
+          <label class="option"><input type="checkbox" value="Cursor" /> Cursor</label>
+          <label class="option"><input type="checkbox" value="GitHub Copilot" /> GitHub Copilot</label>
+          <label class="option"><input type="checkbox" value="Gemini" /> Gemini</label>
+          <label class="option"><input type="checkbox" value="DeepSeek" /> DeepSeek</label>
+          <label class="option"><input type="checkbox" value="Qwen" /> Qwen</label>
+          <label class="option"><input type="checkbox" value="Ollama / локальные модели" /> Ollama / локальные модели</label>
+          <label class="option"><input type="checkbox" value="AI IDE plugins" /> AI IDE plugins</label>
+          <label class="option"><input type="checkbox" value="AI Agents / workflows" /> AI Agents / workflows</label>
+          <label class="option"><input type="checkbox" value="AI генерация тестов" /> AI генерация тестов</label>
+          <label class="option"><input type="checkbox" value="AI генерация документации" /> AI генерация документации</label>
+          <label class="option"><input type="checkbox" value="AI для SQL / аналитики" /> AI для SQL / аналитики</label>
+          <label class="option"><input type="checkbox" value="AI для DevOps" /> AI для DevOps</label>
+          <label class="option"><input type="checkbox" value="Не использую AI" /> Не использую AI</label>
+        </div>
+        <input type="text" name="ai_tools_other" placeholder="Другое, укажите" style="margin-top:10px;" />
+      </div>
+
+      <div class="field">
+        <label class="question">Для каких задач вы используете AI?</label>
+        <div class="options checkbox-group" data-name="ai_tasks">
+          <label class="option"><input type="checkbox" value="Написание кода" /> Написание кода</label>
+          <label class="option"><input type="checkbox" value="Рефакторинг" /> Рефакторинг</label>
+          <label class="option"><input type="checkbox" value="Дебаг" /> Дебаг</label>
+          <label class="option"><input type="checkbox" value="Code review" /> Code review</label>
+          <label class="option"><input type="checkbox" value="Генерация тестов" /> Генерация тестов</label>
+          <label class="option"><input type="checkbox" value="Написание автотестов" /> Написание автотестов</label>
+          <label class="option"><input type="checkbox" value="SQL / аналитика" /> SQL / аналитика</label>
+          <label class="option"><input type="checkbox" value="Документация" /> Документация</label>
+          <label class="option"><input type="checkbox" value="Генерация API контрактов" /> Генерация API контрактов</label>
+          <label class="option"><input type="checkbox" value="Написание ТЗ" /> Написание ТЗ</label>
+          <label class="option"><input type="checkbox" value="Анализ логов" /> Анализ логов</label>
+          <label class="option"><input type="checkbox" value="Инфраструктура / DevOps" /> Инфраструктура / DevOps</label>
+          <label class="option"><input type="checkbox" value="Исследование технологий" /> Исследование технологий</label>
+          <label class="option"><input type="checkbox" value="Обучение" /> Обучение</label>
+          <label class="option"><input type="checkbox" value="Автоматизация рутины" /> Автоматизация рутины</label>
+          <label class="option"><input type="checkbox" value="Не использую" /> Не использую</label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="question">Сколько времени AI экономит вам в среднем в неделю? <span class="required">*</span></label>
+        <div class="options">
+          <label class="option"><input type="radio" name="time_saved" value="Не экономит" required /> Не экономит</label>
+          <label class="option"><input type="radio" name="time_saved" value="<1 часа" /> Менее 1 часа</label>
+          <label class="option"><input type="radio" name="time_saved" value="1–3 часа" /> 1–3 часа</label>
+          <label class="option"><input type="radio" name="time_saved" value="3–5 часов" /> 3–5 часов</label>
+          <label class="option"><input type="radio" name="time_saved" value="5–10 часов" /> 5–10 часов</label>
+          <label class="option"><input type="radio" name="time_saved" value=">10 часов" /> Более 10 часов</label>
+        </div>
+      </div>
+
+      <div class="field"><label class="question" for="regular_workflow">Есть ли задачи, где AI уже стал регулярной частью workflow?</label><textarea id="regular_workflow" name="regular_workflow"></textarea></div>
+    </section>
+
+    <section>
+      <h2>3. Глубина владения AI</h2>
+      <p class="section-desc">Блок помогает понять, насколько глубоко AI встроен в рабочие подходы.</p>
+      <div class="field">
+        <label class="question">Какие практики вы используете?</label>
+        <div class="options checkbox-group" data-name="ai_practices">
+          <label class="option"><input type="checkbox" value="AI внутри IDE" /> AI внутри IDE</label>
+          <label class="option"><input type="checkbox" value="Prompt chaining" /> Prompt chaining</label>
+          <label class="option"><input type="checkbox" value="Context prompting" /> Context prompting</label>
+          <label class="option"><input type="checkbox" value="AI code review" /> AI code review</label>
+          <label class="option"><input type="checkbox" value="AI-assisted debugging" /> AI-assisted debugging</label>
+          <label class="option"><input type="checkbox" value="AI-generated tests" /> AI-generated tests</label>
+          <label class="option"><input type="checkbox" value="Multi-model workflow" /> Multi-model workflow</label>
+          <label class="option"><input type="checkbox" value="AI agents" /> AI agents</label>
+          <label class="option"><input type="checkbox" value="Локальные модели" /> Локальные модели</label>
+          <label class="option"><input type="checkbox" value="RAG / contextual search" /> RAG / contextual search</label>
+          <label class="option"><input type="checkbox" value="AI automation scripts" /> AI automation scripts</label>
+          <label class="option"><input type="checkbox" value="AI для архитектурных решений" /> AI для архитектурных решений</label>
+          <label class="option"><input type="checkbox" value="AI для анализа логов" /> AI для анализа логов</label>
+          <label class="option"><input type="checkbox" value="AI для генерации документации" /> AI для генерации документации</label>
+          <label class="option"><input type="checkbox" value="Ничего из перечисленного" /> Ничего из перечисленного</label>
+        </div>
+      </div>
+
+      <div class="field"><label class="question">Писать эффективные промпты <span class="required">*</span></label><div class="scale five" data-name="skill_prompts" data-max="5"></div></div>
+      <div class="field"><label class="question">Проверять корректность AI-ответов <span class="required">*</span></label><div class="scale five" data-name="skill_verify" data-max="5"></div></div>
+      <div class="field"><label class="question">Использовать AI внутри IDE <span class="required">*</span></label><div class="scale five" data-name="skill_ide" data-max="5"></div></div>
+      <div class="field"><label class="question">Использовать AI для ускорения рутинных задач <span class="required">*</span></label><div class="scale five" data-name="skill_routine" data-max="5"></div></div>
+      <div class="field"><label class="question">Использовать AI для сложных инженерных задач <span class="required">*</span></label><div class="scale five" data-name="skill_complex" data-max="5"></div></div>
+      <div class="field"><label class="question">Использовать AI без ухудшения качества результата <span class="required">*</span></label><div class="scale five" data-name="skill_quality" data-max="5"></div></div>
+
+      <div class="field">
+        <label class="question">Использовали ли вы AI-agent / semi-autonomous workflow? <span class="required">*</span></label>
+        <div class="options">
+          <label class="option"><input type="radio" name="agent_usage" value="Активно использую" required /> Активно использую</label>
+          <label class="option"><input type="radio" name="agent_usage" value="Периодически использую" /> Периодически использую</label>
+          <label class="option"><input type="radio" name="agent_usage" value="Пробовал(а)" /> Пробовал(а)</label>
+          <label class="option"><input type="radio" name="agent_usage" value="Знаю, но не использую" /> Знаю, но не использую</label>
+          <label class="option"><input type="radio" name="agent_usage" value="Не знаком(а)" /> Не знаком(а)</label>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>4. Инициативность в улучшении процессов</h2>
+      <p class="section-desc">Вопросы о самостоятельных действиях и экспериментах за последние 3 месяца.</p>
+      <div class="field">
+        <label class="question">За последние 3 месяца вы:</label>
+        <div class="options checkbox-group" data-name="ai_initiatives">
+          <label class="option"><input type="checkbox" value="Самостоятельно внедрили новый AI-инструмент" /> Самостоятельно внедрили новый AI-инструмент</label>
+          <label class="option"><input type="checkbox" value="Предлагали AI-улучшения процессов" /> Предлагали AI-улучшения процессов</label>
+          <label class="option"><input type="checkbox" value="Делились AI-практиками с коллегами" /> Делились AI-практиками с коллегами</label>
+          <label class="option"><input type="checkbox" value="Автоматизировали рутину через AI" /> Автоматизировали рутину через AI</label>
+          <label class="option"><input type="checkbox" value="Создавали собственные workflow / агенты" /> Создавали собственные workflow / агенты</label>
+          <label class="option"><input type="checkbox" value="Обучали коллег AI-инструментам" /> Обучали коллег AI-инструментам</label>
+          <label class="option"><input type="checkbox" value="Проводили эксперименты с AI" /> Проводили эксперименты с AI</label>
+          <label class="option"><input type="checkbox" value="Не предпринимали ничего из перечисленного" /> Не предпринимали ничего из перечисленного</label>
+        </div>
+      </div>
+      <div class="field"><label class="question">Насколько вам интересно углублять навыки работы с AI? <span class="required">*</span></label><div class="scale" data-name="interest_ai"></div></div>
+      <div class="field">
+        <label class="question">Готовы ли вы инвестировать собственное время в изучение AI? <span class="required">*</span></label>
+        <div class="options">
+          <label class="option"><input type="radio" name="learning_readiness" value="Активно готов" required /> Активно готов</label>
+          <label class="option"><input type="radio" name="learning_readiness" value="Скорее готов" /> Скорее готов</label>
+          <label class="option"><input type="radio" name="learning_readiness" value="Только если потребуется по работе" /> Только если потребуется по работе</label>
+          <label class="option"><input type="radio" name="learning_readiness" value="Скорее не готов" /> Скорее не готов</label>
+          <label class="option"><input type="radio" name="learning_readiness" value="Не готов" /> Не готов</label>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>5. Отношение к изменениям рабочих процессов</h2>
+      <p class="section-desc">Кейсовые вопросы про изменение подходов к работе и оценке эффективности.</p>
+      <div class="field">
+        <label class="question">Как вы считаете, AI через 2–3 года: <span class="required">*</span></label>
+        <div class="options">
+          <label class="option"><input type="radio" name="ai_future" value="Станет обязательной частью работы" required /> Станет обязательной частью работы</label>
+          <label class="option"><input type="radio" name="ai_future" value="Даст сильное преимущество отдельным специалистам" /> Даст сильное преимущество отдельным специалистам</label>
+          <label class="option"><input type="radio" name="ai_future" value="Частично изменит процессы" /> Частично изменит процессы</label>
+          <label class="option"><input type="radio" name="ai_future" value="Переоценен" /> Переоценен</label>
+          <label class="option"><input type="radio" name="ai_future" value="Существенно сократит часть ролей" /> Существенно сократит часть ролей</label>
+          <label class="option"><input type="radio" name="ai_future" value="Затрудняюсь ответить" /> Затрудняюсь ответить</label>
+        </div>
+      </div>
+      <div class="field">
+        <label class="question">Согласны ли вы: “Специалист без навыков работы с AI со временем станет менее конкурентоспособным”? <span class="required">*</span></label>
+        <div class="options">
+          <label class="option"><input type="radio" name="competitiveness_statement" value="Полностью согласен" required /> Полностью согласен</label>
+          <label class="option"><input type="radio" name="competitiveness_statement" value="Скорее согласен" /> Скорее согласен</label>
+          <label class="option"><input type="radio" name="competitiveness_statement" value="Нейтрально" /> Нейтрально</label>
+          <label class="option"><input type="radio" name="competitiveness_statement" value="Скорее не согласен" /> Скорее не согласен</label>
+          <label class="option"><input type="radio" name="competitiveness_statement" value="Полностью не согласен" /> Полностью не согласен</label>
+        </div>
+      </div>
+      <div class="field">
+        <label class="question">Если завтра большая часть команды перейдет на AI-first workflow, вы: <span class="required">*</span></label>
+        <div class="options">
+          <label class="option"><input type="radio" name="ai_first_reaction" value="Буду драйвером изменений" required /> Буду драйвером изменений</label>
+          <label class="option"><input type="radio" name="ai_first_reaction" value="Быстро адаптируюсь" /> Быстро адаптируюсь</label>
+          <label class="option"><input type="radio" name="ai_first_reaction" value="Адаптируюсь постепенно" /> Адаптируюсь постепенно</label>
+          <label class="option"><input type="radio" name="ai_first_reaction" value="Буду относиться скептически" /> Буду относиться скептически</label>
+          <label class="option"><input type="radio" name="ai_first_reaction" value="Скорее буду сопротивляться" /> Скорее буду сопротивляться</label>
+        </div>
+      </div>
+      <div class="field">
+        <label class="question">Если через 6 месяцев эффективность использования AI станет частью performance review, ваша реакция: <span class="required">*</span></label>
+        <div class="options">
+          <label class="option"><input type="radio" name="performance_review_reaction" value="Это логично и неизбежно" required /> Это логично и неизбежно</label>
+          <label class="option"><input type="radio" name="performance_review_reaction" value="Скорее поддерживаю" /> Скорее поддерживаю</label>
+          <label class="option"><input type="radio" name="performance_review_reaction" value="Нейтрально" /> Нейтрально</label>
+          <label class="option"><input type="radio" name="performance_review_reaction" value="Скорее негативно" /> Скорее негативно</label>
+          <label class="option"><input type="radio" name="performance_review_reaction" value="Резко негативно" /> Резко негативно</label>
+        </div>
+      </div>
+      <div class="field">
+        <label class="question">Если коллега с AI выполняет аналогичные задачи в 2 раза быстрее вас, вы: <span class="required">*</span></label>
+        <div class="options">
+          <label class="option"><input type="radio" name="faster_colleague_reaction" value="Начну активно перенимать практики" required /> Начну активно перенимать практики</label>
+          <label class="option"><input type="radio" name="faster_colleague_reaction" value="Попрошу обучение / помощь" /> Попрошу обучение / помощь</label>
+          <label class="option"><input type="radio" name="faster_colleague_reaction" value="Постараюсь адаптироваться самостоятельно" /> Постараюсь адаптироваться самостоятельно</label>
+          <label class="option"><input type="radio" name="faster_colleague_reaction" value="Считаю, что скорость не главное" /> Считаю, что скорость не главное</label>
+          <label class="option"><input type="radio" name="faster_colleague_reaction" value="Считаю такой подход вредным" /> Считаю такой подход вредным</label>
+        </div>
+      </div>
+      <div class="field"><label class="question">Насколько вам комфортно быстро перестраивать свои рабочие подходы под новые технологии? <span class="required">*</span></label><div class="scale" data-name="change_comfort"></div></div>
+    </section>
+
+    <section>
+      <h2>6. Ограничения и риски</h2>
+      <p class="section-desc">Здесь важно честно указать ограничения. Наличие рисков само по себе не является негативным фактором.</p>
+      <div class="field">
+        <label class="question">Что мешает вам использовать AI активнее?</label>
+        <div class="options checkbox-group" data-name="ai_blockers">
+          <label class="option"><input type="checkbox" value="Не хватает знаний" /> Не хватает знаний</label>
+          <label class="option"><input type="checkbox" value="Не хватает времени" /> Не хватает времени</label>
+          <label class="option"><input type="checkbox" value="Нет удобных инструментов" /> Нет удобных инструментов</label>
+          <label class="option"><input type="checkbox" value="Ограничения компании" /> Ограничения компании</label>
+          <label class="option"><input type="checkbox" value="Вопросы безопасности" /> Вопросы безопасности</label>
+          <label class="option"><input type="checkbox" value="Низкое качество ответов" /> Низкое качество ответов</label>
+          <label class="option"><input type="checkbox" value="Сложно встроить в workflow" /> Сложно встроить в workflow</label>
+          <label class="option"><input type="checkbox" value="Привычнее работать без AI" /> Привычнее работать без AI</label>
+          <label class="option"><input type="checkbox" value="Не вижу существенной пользы" /> Не вижу существенной пользы</label>
+          <label class="option"><input type="checkbox" value="Опасаюсь деградации навыков" /> Опасаюсь деградации навыков</label>
+          <label class="option"><input type="checkbox" value="Опасаюсь зависимости от AI" /> Опасаюсь зависимости от AI</label>
+          <label class="option"><input type="checkbox" value="Не хочу менять подход к работе" /> Не хочу менять подход к работе</label>
+        </div>
+        <input type="text" name="ai_blockers_other" placeholder="Другое, укажите" style="margin-top:10px;" />
+      </div>
+      <div class="field"><label class="question" for="useful_ai_processes">Какие AI-процессы в команде вы считаете наиболее полезными?</label><textarea id="useful_ai_processes" name="useful_ai_processes"></textarea></div>
+      <div class="field"><label class="question" for="underestimated_risks">Какие риски AI-внедрения вы считаете наиболее недооцененными?</label><textarea id="underestimated_risks" name="underestimated_risks"></textarea></div>
+      <div class="field"><label class="question" for="company_actions">Что компания должна сделать, чтобы AI реально приносил пользу?</label><textarea id="company_actions" name="company_actions"></textarea></div>
+    </section>
+
+    <section>
+      <h2>7. Самооценка эффективности</h2>
+      <p class="section-desc">Финальный блок для оценки личного влияния инструментов на эффективность.</p>
+      <div class="field"><label class="question">Насколько AI сегодня влияет на вашу личную эффективность? <span class="required">*</span></label><div class="scale" data-name="personal_ai_impact"></div></div>
+      <div class="field"><label class="question">Как вы оцениваете свой текущий уровень конкурентоспособности в AI-first среде? <span class="required">*</span></label><div class="scale" data-name="ai_first_competitiveness"></div></div>
+      <div class="field"><label class="question" for="future_specialist">Какой специалист будет наиболее ценен через 3–5 лет?</label><textarea id="future_specialist" name="future_specialist"></textarea></div>
+    </section>
+
+    <div class="submit-area">
+      <button id="submitButton" type="submit">Отправить ответы</button>
+      <div id="status" class="status"></div>
+      <div class="footer-note">После отправки ответы будут записаны в Google Sheets. Повторная отправка с того же устройства будет заблокирована.</div>
+    </div>
+  </form>
+</main>
+
+<script>
+  const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwKA9a6Y9Xhla81AK__P8y5jGZ8D8kVq8fppf4aEw-izfE_1XpnfnlzGOdcPwSrdaQ5iQ/exec";
+  const LOCAL_STORAGE_KEY = "ai_readiness_survey_v2_submitted";
+
+  function createScale(container) {
+    const name = container.dataset.name;
+    const max = Number(container.dataset.max || 10);
+    for (let i = 1; i <= max; i++) {
+      const label = document.createElement("label");
+      const input = document.createElement("input");
+      const span = document.createElement("span");
+      input.type = "radio"; input.name = name; input.value = String(i); input.required = true; span.textContent = i;
+      label.appendChild(input); label.appendChild(span); container.appendChild(label);
+    }
+  }
+  document.querySelectorAll(".scale").forEach(createScale);
+
+  const roleSelect = document.getElementById("role");
+  const roleOtherField = document.getElementById("roleOtherField");
+  const roleOtherInput = document.getElementById("role_other");
+  roleSelect.addEventListener("change", function () {
+    if (roleSelect.value === "Другое") {
+      roleOtherField.classList.remove("hidden");
+      roleOtherInput.required = true;
+    } else {
+      roleOtherField.classList.add("hidden");
+      roleOtherInput.required = false;
+      roleOtherInput.value = "";
+    }
+  });
+
+  function normalizeName(value) {
+    return String(value || "").trim().replace(/\s+/g, " ").toLowerCase();
+  }
+
+  function getCheckboxGroupValue(group) {
+    return Array.from(group.querySelectorAll("input[type='checkbox']:checked")).map(input => input.value).join("; ");
+  }
+
+  function formToPayload(form) {
+    const payload = {};
+    const formData = new FormData(form);
+    for (const [key, value] of formData.entries()) {
+      if (!payload[key]) payload[key] = value;
+    }
+    document.querySelectorAll(".checkbox-group").forEach(group => {
+      payload[group.dataset.name] = getCheckboxGroupValue(group);
+    });
+    payload.name_normalized = normalizeName(payload.name);
+    payload.submitted_at = new Date().toISOString();
+    payload.user_agent = navigator.userAgent;
+    return payload;
+  }
+
+  function blockIfAlreadySubmitted() {
+    if (localStorage.getItem(LOCAL_STORAGE_KEY) === "true") {
+      document.getElementById("surveyForm").classList.add("hidden");
+      document.getElementById("alreadySubmitted").style.display = "block";
+    }
+  }
+  blockIfAlreadySubmitted();
+
+  document.getElementById("surveyForm").addEventListener("submit", async function(event) {
+    event.preventDefault();
+    const status = document.getElementById("status");
+    const button = document.getElementById("submitButton");
+
+    if (localStorage.getItem(LOCAL_STORAGE_KEY) === "true") {
+      status.textContent = "Ответ уже был отправлен с этого устройства.";
+      status.className = "status error";
+      return;
     }
 
-    document.querySelectorAll(".scale").forEach(createScale);
+    button.disabled = true;
+    status.textContent = "Отправляем ответы...";
+    status.className = "status";
 
-    function getCheckboxGroupValue(group) {
-      return Array.from(group.querySelectorAll("input[type='checkbox']:checked"))
-        .map(input => input.value)
-        .join("; ");
-    }
-
-    function formToPayload(form) {
-      const payload = {};
-      const formData = new FormData(form);
-
-      for (const [key, value] of formData.entries()) {
-        if (!payload[key]) payload[key] = value;
-      }
-
-      document.querySelectorAll(".checkbox-group").forEach(group => {
-        payload[group.dataset.name] = getCheckboxGroupValue(group);
+    try {
+      const payload = formToPayload(event.target);
+      const response = await fetch(GOOGLE_SCRIPT_URL, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(payload)
       });
+      const result = await response.json();
 
-      payload.submitted_at = new Date().toISOString();
-      payload.user_agent = navigator.userAgent;
+      if (!result.ok) throw new Error(result.message || "Ошибка записи");
 
-      return payload;
-    }
-
-    document.getElementById("surveyForm").addEventListener("submit", async function(event) {
-      event.preventDefault();
-
-      const status = document.getElementById("status");
-      const button = document.getElementById("submitButton");
-
-      if (!GOOGLE_SCRIPT_URL || GOOGLE_SCRIPT_URL.includes("PASTE_YOUR")) {
-        status.textContent = "Не настроен URL Google Apps Script. Вставьте URL в переменную GOOGLE_SCRIPT_URL.";
+      if (result.duplicate) {
+        status.textContent = "Ответ с таким ФИО уже был отправлен ранее.";
         status.className = "status error";
         return;
       }
 
-      button.disabled = true;
-      status.textContent = "Отправляем ответы...";
-      status.className = "status";
-
-      try {
-        const payload = formToPayload(event.target);
-
-        await fetch(GOOGLE_SCRIPT_URL, {
-          method: "POST",
-          mode: "no-cors",
-          headers: {
-            "Content-Type": "text/plain;charset=utf-8"
-          },
-          body: JSON.stringify(payload)
-        });
-
-        status.textContent = "Спасибо! Ответы отправлены.";
-        status.className = "status success";
-        event.target.reset();
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      } catch (error) {
-        status.textContent = "Ошибка отправки. Проверьте подключение и настройки Google Apps Script.";
-        status.className = "status error";
-      } finally {
-        button.disabled = false;
-      }
-    });
-  </script>
+      localStorage.setItem(LOCAL_STORAGE_KEY, "true");
+      status.textContent = "Спасибо! Ответы отправлены.";
+      status.className = "status success";
+      event.target.reset();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } catch (error) {
+      status.textContent = "Ошибка отправки. Проверьте подключение или настройки Google Apps Script.";
+      status.className = "status error";
+      console.error(error);
+    } finally {
+      button.disabled = false;
+    }
+  });
+</script>
 </body>
 </html>
